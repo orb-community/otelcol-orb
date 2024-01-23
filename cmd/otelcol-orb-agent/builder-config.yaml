@@ -1,5 +1,5 @@
 dist:
-  name: otelcol-orb
+  name: otelcol-orb-agent
   description: OpenTelemetry Collector for Orb binary
   version: 0.0.1
   output_path: ./dist

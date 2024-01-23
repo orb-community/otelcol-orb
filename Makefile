@@ -215,11 +215,7 @@ endif
 
 .PHONY: docker-otelcontribcol
 docker-otelcontribcol:
-	COMPONENT=otelcontribcol $(MAKE) docker-component
-
-.PHONY: docker-telemetrygen
-docker-telemetrygen:
-	COMPONENT=telemetrygen $(MAKE) docker-component
+	COMPONENT=otelcol-orb-agent $(MAKE) docker-component
 
 .PHONY: generate
 generate: install-tools
@@ -232,65 +228,31 @@ mdatagen-test:
 	cd cmd/mdatagen && $(GOCMD) generate ./...
 	cd cmd/mdatagen && $(GOCMD) test ./...
 
-.PHONY: githubgen-install
-githubgen-install:
-	cd cmd/githubgen && $(GOCMD) install .
-
-.PHONY: gengithub
-gengithub: githubgen-install
-	githubgen
-
-.PHONY: gendistributions
-gendistributions: githubgen-install
-	githubgen distributions
-
 .PHONY: update-codeowners
 update-codeowners: gengithub generate
 
 FILENAME?=$(shell git branch --show-current)
-.PHONY: chlog-new
-chlog-new: $(CHLOGGEN)
-	$(CHLOGGEN) new --config $(CHLOGGEN_CONFIG) --filename $(FILENAME)
 
-.PHONY: chlog-validate
-chlog-validate: $(CHLOGGEN)
-	$(CHLOGGEN) validate --config $(CHLOGGEN_CONFIG)
+.PHONY: genotelcol-agent
+genotelcol-agent: $(BUILDER)
+	$(BUILDER) --skip-compilation --config cmd/otelcol-orb-agent/builder-config.yaml --output-path cmd/otelcol-orb-agent
+	$(MAKE) -C cmd/otelcol-orb-agent fmt
 
-.PHONY: chlog-preview
-chlog-preview: $(CHLOGGEN)
-	$(CHLOGGEN) update --config $(CHLOGGEN_CONFIG) --dry
-
-.PHONY: chlog-update
-chlog-update: $(CHLOGGEN)
-	$(CHLOGGEN) update --config $(CHLOGGEN_CONFIG) --version $(VERSION)
-
-.PHONY: genotelcontribcol
-genotelcontribcol: $(BUILDER)
-	$(BUILDER) --skip-compilation --config cmd/otelcontribcol/builder-config.yaml --output-path cmd/otelcontribcol
-	$(MAKE) -C cmd/otelcontribcol fmt
-
+.PHONY: genotelcol-maestro
+genotelcol-maestro: $(BUILDER)
+	$(BUILDER) --skip-compilation --config cmd/otelcol-orb-maestro/builder-config.yaml --output-path cmd/otelcol-orb-maestro
+	$(MAKE) -C cmd/otelcol-orb-maestro fmt
 
 # Build the Collector executable.
-.PHONY: otelcontribcol
-otelcontribcol:
-	cd ./cmd/otelcontribcol && GO111MODULE=on CGO_ENABLED=0 $(GOCMD) build -trimpath -o ../../bin/otelcontribcol_$(GOOS)_$(GOARCH)$(EXTENSION) \
+.PHONY: otelcol-agent
+otelcol-maestro:
+	cd ./cmd/otelcol-orb-agent && GO111MODULE=on CGO_ENABLED=0 $(GOCMD) build -trimpath -o ../../bin/otelcontribcol_$(GOOS)_$(GOARCH)$(EXTENSION) \
 		-tags $(GO_BUILD_TAGS) .
 
-.PHONY: genoteltestbedcol
-genoteltestbedcol: $(BUILDER)
-	$(BUILDER) --skip-compilation --config cmd/oteltestbedcol/builder-config.yaml --output-path cmd/oteltestbedcol
-	$(MAKE) -C cmd/oteltestbedcol fmt
-
-# Build the Collector executable, with only components used in testbed.
-.PHONY: oteltestbedcol
-oteltestbedcol:
-	cd ./cmd/oteltestbedcol && GO111MODULE=on CGO_ENABLED=0 $(GOCMD) build -trimpath -o ../../bin/oteltestbedcol_$(GOOS)_$(GOARCH)$(EXTENSION) \
-		-tags $(GO_BUILD_TAGS) .
-
-# Build the telemetrygen executable.
-.PHONY: telemetrygen
-telemetrygen:
-	cd ./cmd/telemetrygen && GO111MODULE=on CGO_ENABLED=0 $(GOCMD) build -trimpath -o ../../bin/telemetrygen_$(GOOS)_$(GOARCH)$(EXTENSION) \
+# Build the Collector executable.
+.PHONY: otelcol-maestro
+otelcol-maestro:
+	cd ./cmd/otelcol-orb-maestro && GO111MODULE=on CGO_ENABLED=0 $(GOCMD) build -trimpath -o ../../bin/otelcontribcol_$(GOOS)_$(GOARCH)$(EXTENSION) \
 		-tags $(GO_BUILD_TAGS) .
 
 .PHONY: update-otel
@@ -301,39 +263,6 @@ update-otel:$(MULTIMOD)
 	git add . && git commit -s -m "[chore] multimod update beta modules"
 	$(MAKE) gotidy
 
-.PHONY: otel-from-tree
-otel-from-tree:
-	# This command allows you to make changes to your local checkout of otel core and build
-	# contrib against those changes without having to push to github and update a bunch of
-	# references. The workflow is:
-	#
-	# 1. Hack on changes in core (assumed to be checked out in ../opentelemetry-collector from this directory)
-	# 2. Run `make otel-from-tree` (only need to run it once to remap go modules)
-	# 3. You can now build contrib and it will use your local otel core changes.
-	# 4. Before committing/pushing your contrib changes, undo by running `make otel-from-lib`.
-	$(MAKE) for-all CMD="$(GOCMD) mod edit -replace go.opentelemetry.io/collector=$(SRC_ROOT)/../opentelemetry-collector"
-
-.PHONY: otel-from-lib
-otel-from-lib:
-	# Sets opentelemetry core to be not be pulled from local source tree. (Undoes otel-from-tree.)
-	$(MAKE) for-all CMD="$(GOCMD) mod edit -dropreplace go.opentelemetry.io/collector"
-
-.PHONY: build-examples
-build-examples:
-	docker-compose -f examples/demo/docker-compose.yaml build
-	docker-compose -f exporter/splunkhecexporter/example/docker-compose.yml build
-
-.PHONY: deb-rpm-package
-%-package: ARCH ?= amd64
-%-package:
-	GOOS=linux GOARCH=$(ARCH) $(MAKE) otelcontribcol
-	docker build -t otelcontribcol-fpm internal/buildscripts/packaging/fpm
-	docker run --rm -v $(CURDIR):/repo -e PACKAGE=$* -e VERSION=$(VERSION) -e ARCH=$(ARCH) otelcontribcol-fpm
-
-# Verify existence of READMEs for components specified as default components in the collector.
-.PHONY: checkdoc
-checkdoc: $(CHECKFILE)
-	$(CHECKFILE) --project-path $(CURDIR) --component-rel-path $(COMP_REL_PATH) --module-name $(MOD_NAME) --file-name "README.md"
 
 # Verify existence of metadata.yaml for components specified as default components in the collector.
 .PHONY: checkmetadata
@@ -347,62 +276,3 @@ checkapi:
 .PHONY: all-checklinks
 all-checklinks:
 	$(MAKE) $(FOR_GROUP_TARGET) TARGET="checklinks"
-
-# Function to execute a command. Note the empty line before endef to make sure each command
-# gets executed separately instead of concatenated with previous one.
-# Accepts command to execute as first parameter.
-define exec-command
-$(1)
-
-endef
-
-# List of directories where certificates are stored for unit tests.
-CERT_DIRS := receiver/sapmreceiver/testdata \
-             receiver/signalfxreceiver/testdata \
-             receiver/splunkhecreceiver/testdata \
-             receiver/mongodbatlasreceiver/testdata/alerts/cert \
-             receiver/mongodbreceiver/testdata/certs \
-             receiver/cloudflarereceiver/testdata/cert
-
-# Generate certificates for unit tests relying on certificates.
-.PHONY: certs
-certs:
-	$(foreach dir, $(CERT_DIRS), $(call exec-command, @internal/buildscripts/gen-certs.sh -o $(dir)))
-
-.PHONY: multimod-verify
-multimod-verify: $(MULTIMOD)
-	@echo "Validating versions.yaml"
-	$(MULTIMOD) verify
-
-.PHONY: multimod-prerelease
-multimod-prerelease: $(MULTIMOD)
-	$(MULTIMOD) prerelease -s=true -b=false -v ./versions.yaml -m contrib-base
-	$(MAKE) gotidy
-
-.PHONY: multimod-sync
-multimod-sync: $(MULTIMOD)
-	$(MULTIMOD) sync -a=true -s=true -o ../opentelemetry-collector
-	$(MAKE) gotidy
-
-.PHONY: crosslink
-crosslink: $(CROSSLINK)
-	@echo "Executing crosslink"
-	$(CROSSLINK) --root=$(shell pwd) --prune
-
-.PHONY: clean
-clean:
-	@echo "Removing coverage files"
-	find . -type f -name 'coverage.txt' -delete
-	find . -type f -name 'coverage.html' -delete
-	find . -type f -name 'coverage.out' -delete
-	find . -type f -name 'integration-coverage.txt' -delete
-	find . -type f -name 'integration-coverage.html' -delete
-
-.PHONY: genconfigdocs
-genconfigdocs:
-	cd cmd/configschema && $(GOCMD) run ./docsgen all
-
-.PHONY: generate-gh-issue-templates
-generate-gh-issue-templates:
-	cd cmd/githubgen && $(GOCMD) install .
-	githubgen issue-templates

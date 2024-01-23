@@ -65,3 +65,32 @@ Each component is supported either by the Orb Community maintainers, as defined 
 The OpenTelemetry Collector Contrib maintainers may at any time downgrade specific components, including vendor-specific ones, if they are deemed unmaintained or if they pose a risk to the repository and/or binary distribution.
 
 Even though the OpenTelemetry Collector Contrib maintainers are ultimately responsible for the components hosted here, actual support will likely be provided by individual contributors, typically a code owner for the specific component.
+
+## Getting Started
+
+Install the tools needed to build the collector:
+
+```shell
+make install-tools
+```
+This will install builder or ocb.
+
+Build the binary using the following command:
+
+
+```shell 
+# Orb agent binary
+builder --config=cmd/otelcol-orb-agent/builder-config.yaml
+
+
+# Orb Maestro binary
+builder --config=cmd/otelcol-orb-maestrobuilder-config.yaml
+```
+
+
+
+Create the Docker image using the following command:
+
+```shell
+docker build -t otelcontribcol:latest .
+```
