@@ -1,4 +1,4 @@
-module github.com/lpegoraro/opentelemetry-collector-contrib/receiver/httpmetricsreceiver
+module github.com/orb-community/otelcol-orb/receiver/httpmetricsreceiver
 
 go 1.20
 
