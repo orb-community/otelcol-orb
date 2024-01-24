@@ -43,10 +43,12 @@
 
 # OpenTelemetry Collector For Orb
 
-This is a repository for OpenTelemetry Collector components that are not suitable for the  [core repository](https://github.com/open-telemetry/opentelemetry-collector) of the collector, but instead are customized by [orb-community](https://github.com/orb-community) to better fit the needs of the orb project.
+This is a repository for OpenTelemetry Collector components that are customized by [orb-community](https://github.com/orb-community) to better fit the needs of the orb project.
 
 The official distributions, core and contrib, are available as part of the [opentelemetry-collector-releases](https://github.com/open-telemetry/opentelemetry-collector-releases) 
-repository. This is a custom collector built using the [OpenTelemetry Collector Builder](https://github.com/open-telemetry/opentelemetry-collector/tree/main/cmd/builder), using the components they need from the core repository, the contrib repository, and possibly third-party or internal repositories.
+repository. 
+
+This is a custom collector built using the [OpenTelemetry Collector Builder](https://github.com/open-telemetry/opentelemetry-collector/tree/main/cmd/builder), using the components they need from the core repository, the contrib repository, and possibly third-party or internal repositories.
 
 Each component has its own support levels, as defined in the following sections. For each signal that a component supports, there's a stability level, setting the right expectations. It is possible then that a component will be **Stable** for traces but **Alpha** for metrics and **Development** for logs.
 
@@ -54,17 +56,9 @@ Each component has its own support levels, as defined in the following sections.
 
 Stability level for components in this repository follow the [definitions](https://github.com/open-telemetry/opentelemetry-collector#stability-levels) from the OpenTelemetry Collector repository.
 
-## Gated features
-
-Some features are hidden behind feature gates before they are part of the main code path for the component. Note that the feature gates themselves might be at different [lifecycle stages](https://github.com/open-telemetry/opentelemetry-collector/tree/main/featuregate#feature-lifecycle).
-
 ## Support
 
-Each component is supported either by the Orb Community maintainers, as defined by the GitHub group [@open-telemetry/collector-contrib-maintainer](https://github.com/orgs/open-telemetry/teams/collector-contrib-maintainer), or by specific vendors. See the individual README files for information about the specific components.
-
-The OpenTelemetry Collector Contrib maintainers may at any time downgrade specific components, including vendor-specific ones, if they are deemed unmaintained or if they pose a risk to the repository and/or binary distribution.
-
-Even though the OpenTelemetry Collector Contrib maintainers are ultimately responsible for the components hosted here, actual support will likely be provided by individual contributors, typically a code owner for the specific component.
+Each component is supported either by the Orb Community maintainers. See the individual README files for information about the specific components.
 
 ## Getting Started
 
@@ -80,17 +74,13 @@ Build the binary using the following command:
 
 ```shell 
 # Orb agent binary
-builder --config=cmd/otelcol-orb-agent/builder-config.yaml
-
+make otelcol-orb-agent
+# Orb agent docker
+make docker-otelcol-orb-agent
 
 # Orb Maestro binary
-builder --config=cmd/otelcol-orb-maestrobuilder-config.yaml
+make otelcol-orb-maestro
+# Orb Maestro docker
+make docker-otelcol-orb-agent
 ```
 
-
-
-Create the Docker image using the following command:
-
-```shell
-docker build -t otelcontribcol:latest .
-```

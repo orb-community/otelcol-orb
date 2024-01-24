@@ -213,9 +213,13 @@ ifndef COMPONENT
 	$(error COMPONENT variable was not defined)
 endif
 
-.PHONY: docker-otelcontribcol
-docker-otelcontribcol:
+.PHONY: docker-otelcolagent
+docker-otelcolagent:
 	COMPONENT=otelcol-orb-agent $(MAKE) docker-component
+
+.PHONY: docker-otelcolmaestro
+docker-otelcolmaestro:
+	COMPONENT=otelcol-orb-maestro $(MAKE) docker-component
 
 .PHONY: generate
 generate: install-tools
@@ -254,15 +258,6 @@ otelcol-maestro:
 otelcol-maestro:
 	cd ./cmd/otelcol-orb-maestro && GO111MODULE=on CGO_ENABLED=0 $(GOCMD) build -trimpath -o ../../bin/otelcontribcol_$(GOOS)_$(GOARCH)$(EXTENSION) \
 		-tags $(GO_BUILD_TAGS) .
-
-.PHONY: update-otel
-update-otel:$(MULTIMOD)
-	$(MULTIMOD) sync -s=true -o ../opentelemetry-collector -m stable --commit-hash $(OTEL_STABLE_VERSION)
-	git add . && git commit -s -m "[chore] multimod update stable modules"
-	$(MULTIMOD) sync -s=true -o ../opentelemetry-collector -m beta --commit-hash $(OTEL_VERSION)
-	git add . && git commit -s -m "[chore] multimod update beta modules"
-	$(MAKE) gotidy
-
 
 # Verify existence of metadata.yaml for components specified as default components in the collector.
 .PHONY: checkmetadata
