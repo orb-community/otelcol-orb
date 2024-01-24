@@ -205,11 +205,11 @@ endif
 
 .PHONY: docker-otelcolagent
 docker-otelcolagent:
-	COMPONENT=otelcol-orb-agent $(MAKE) docker-component
+	docker build -t otelcol-orb-agent ./cmd/otelcol-orb-agent/
 
 .PHONY: docker-otelcolmaestro
 docker-otelcolmaestro:
-	COMPONENT=otelcol-orb-maestro $(MAKE) docker-component
+	docker build -t otelcol-orb-maestro ./cmd/otelcol-orb-maestro/
 
 .PHONY: generate
 generate: install-tools
