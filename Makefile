@@ -81,12 +81,6 @@ integration-test:
 integration-tests-with-cover:
 	@$(MAKE) for-integration-target TARGET="do-integration-tests-with-cover"
 
-# Long-running e2e tests
-.PHONY: stability-tests
-stability-tests: otelcontribcol
-	@echo Stability tests are disabled until we have a stable performance environment.
-	@echo To enable the tests replace this echo by $(MAKE) -C testbed run-stability-tests
-
 .PHONY: gogci
 gogci:
 	$(MAKE) $(FOR_GROUP_TARGET) TARGET="gci"
@@ -196,10 +190,6 @@ for-integration-target: $(INTEGRATION_MODS)
 all-pwd:
 	$(MAKE) $(FOR_GROUP_TARGET) TARGET="pwd"
 
-.PHONY: run
-run:
-	cd ./cmd/otelcontribcol && GO111MODULE=on $(GOCMD) run --race . --config ../../${RUN_CONFIG} ${RUN_ARGS}
-
 .PHONY: docker-component # Not intended to be used directly
 docker-component: check-component
 	GOOS=linux GOARCH=amd64 $(MAKE) $(COMPONENT)
@@ -231,9 +221,6 @@ mdatagen-test:
 	cd cmd/mdatagen && $(GOCMD) install .
 	cd cmd/mdatagen && $(GOCMD) generate ./...
 	cd cmd/mdatagen && $(GOCMD) test ./...
-
-.PHONY: update-codeowners
-update-codeowners: gengithub generate
 
 FILENAME?=$(shell git branch --show-current)
 

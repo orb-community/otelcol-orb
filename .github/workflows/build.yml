@@ -1,0 +1,48 @@
+name: Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-otelcol-orb-agent-binary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.21.x
+      - name: Install dependencies and tools
+        run: | 
+          go mod tidy
+          go install github.com/open-telemetry/opentelemetry-collector-builder@latest
+          make install-tools
+      - name: Build Otelcol Orb Agent
+        run: make otelcol-orb-agent
+      - name: Debug built version
+        run: ./cmd/otelcol-orb-agent/dist/otelcol-orb --version
+      - name: Build Otelcol Orb Agent Docker
+        run: make docker-otelcol-orb-agent
+
+  build-otelcol-orb-maestro:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.21.x
+      - name: Install dependencies and tools
+        run: |
+          go mod tidy
+          go install github.com/open-telemetry/opentelemetry-collector-builder@latest
+          make install-tools
+      - name: Build Otelcol Orb Maestro
+        run: make otelcol-orb-maestro
+      - name: Debug built version
+        run: ./cmd/otelcol-orb-maestro/dist/otelcol-orb --version
+      - name: Build Otelcol Orb Maestro Docker
+        run: make docker-otelcol-orb-maestro
