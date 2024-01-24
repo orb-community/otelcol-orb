@@ -19,7 +19,7 @@ import (
 	"go.uber.org/multierr"
 	"go.uber.org/zap"
 
-	"github.com/lpegoraro/opentelemetry-collector-contrib/receiver/httpmetricsreceiver/internal/metadata"
+	"github.com/orb-community/otelcol-orb/httpmetricsreceiver/internal/metadata"
 )
 
 var (
