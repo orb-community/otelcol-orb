@@ -4,6 +4,8 @@ RUN apk --update add ca-certificates git tzdata
 
 WORKDIR /build
 
+COPY ../../receiver /build/receivers
+
 RUN go install go.opentelemetry.io/collector/cmd/builder@latest
 COPY builder-config.yaml .
 RUN builder --config=builder-config.yaml

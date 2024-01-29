@@ -89,6 +89,8 @@ github.com/modern-go/reflect2 v1.0.2 h1:xBagoLtFs94CBntxluKeaWgTMpvLxC4ur3nMaC9G
 github.com/modern-go/reflect2 v1.0.2/go.mod h1:yWuevngMOJpCy52FWWMvUC8ws7m/LJsjYzDa0/r8luk=
 github.com/open-telemetry/opentelemetry-collector-contrib/pkg/golden v0.91.0 h1:Mx/Xyxfeqr0dm8M9XL6lM5jZN3sp+5PUGZBR6QUJbyA=
 github.com/open-telemetry/opentelemetry-collector-contrib/pkg/golden v0.91.0/go.mod h1:JuAibPtRgW2nNPJ3kTBsZIKtriAfa8Dh3yrlPHVvuMM=
+github.com/open-telemetry/opentelemetry-collector-contrib/pkg/golden v0.93.0 h1:sQ2+pQ1vkZil4CpsjdzSwetleNKMgLoO1uAXwwbbZSY=
+github.com/open-telemetry/opentelemetry-collector-contrib/pkg/golden v0.93.0/go.mod h1:hn5eC3vatwBMZXQLNc9lzZ8vxTXjVpJ3DjyUu9M2CiM=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/prometheus/client_golang v1.17.0 h1:rl2sfwZMtSthVU752MqfjQozy7blglC+1SOtjMAMh+Q=
@@ -115,6 +117,7 @@ go.opencensus.io v0.24.0 h1:y73uSU6J157QMP2kn2r30vwW1A2W2WFwSCGnAVxeaD0=
 go.opencensus.io v0.24.0/go.mod h1:vNK8G9p7aAivkbmorf4v+7Hgx+Zs0yY+0fOtgBfjQKo=
 go.opentelemetry.io/collector v0.91.0 h1:C7sGUJDJ5nwm+CkWpAaVP3lNsuYpwSRbkmLncFjkmO8=
 go.opentelemetry.io/collector v0.91.0/go.mod h1:YhQpIDZsn+bICAAqgBwXk9wqK8GKZDv+aogfG52zUuE=
+go.opentelemetry.io/collector v0.93.0 h1:wnyNd3OjwD7wmTIEVvyZG9cS+dhmfLAhNutWDgE5Vqo=
 go.opentelemetry.io/collector v0.93.0/go.mod h1:lorK6TQaQvg0RDRN42HwY0Gqc/d7mvBgCMeJCYGishA=
 go.opentelemetry.io/collector/component v0.91.0 h1:aBT1i2zGyfh9PalYJLfXVvQp+osHyalwyDFselI1CtA=
 go.opentelemetry.io/collector/component v0.91.0/go.mod h1:2KBHvjNFdU7oOjsObQeC4Ta2Ef607OISU5obznW00fw=

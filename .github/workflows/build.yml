@@ -25,7 +25,9 @@ jobs:
       - name: Debug built version
         run: ./cmd/otelcol-orb-agent/dist/otelcol-orb --version
       - name: Build Otelcol Orb Agent Docker
-        run: make docker-otelcol-orb-agent
+        run: |
+          cd cmd/otelcol-orb-agent
+          docker build -t otelcol-orb-agent .
 
   build-otelcol-orb-maestro:
     runs-on: ubuntu-latest
@@ -45,4 +47,6 @@ jobs:
       - name: Debug built version
         run: ./cmd/otelcol-orb-maestro/dist/otelcol-orb --version
       - name: Build Otelcol Orb Maestro Docker
-        run: make docker-otelcol-orb-maestro
+        run: |
+          cd cmd/otelcol-orb-maestro
+          docker build -t otelcol-orb-maestro .
