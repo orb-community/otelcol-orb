@@ -224,25 +224,25 @@ mdatagen-test:
 
 FILENAME?=$(shell git branch --show-current)
 
-.PHONY: genotelcol-agent
-genotelcol-agent: $(BUILDER)
+.PHONY: genotelcolagent
+genotelcolagent: $(BUILDER)
 	$(BUILDER) --skip-compilation --config cmd/otelcol-orb-agent/builder-config.yaml --output-path cmd/otelcol-orb-agent
 	$(MAKE) -C cmd/otelcol-orb-agent fmt
 
-.PHONY: genotelcol-maestro
-genotelcol-maestro: $(BUILDER)
+.PHONY: genotelcolmaestro
+genotelcolmaestro: $(BUILDER)
 	$(BUILDER) --skip-compilation --config cmd/otelcol-orb-maestro/builder-config.yaml --output-path cmd/otelcol-orb-maestro
 	$(MAKE) -C cmd/otelcol-orb-maestro fmt
 
 # Build the Collector executable.
-.PHONY: otelcol-agent
-otelcol-maestro:
+.PHONY: otelcolagent
+otelcolmaestro:
 	cd ./cmd/otelcol-orb-agent && GO111MODULE=on CGO_ENABLED=0 $(GOCMD) build -trimpath -o ../../bin/otelcontribcol_$(GOOS)_$(GOARCH)$(EXTENSION) \
 		-tags $(GO_BUILD_TAGS) .
 
 # Build the Collector executable.
-.PHONY: otelcol-maestro
-otelcol-maestro:
+.PHONY: otelcolmaestro
+otelcolmaestro:
 	cd ./cmd/otelcol-orb-maestro && GO111MODULE=on CGO_ENABLED=0 $(GOCMD) build -trimpath -o ../../bin/otelcontribcol_$(GOOS)_$(GOARCH)$(EXTENSION) \
 		-tags $(GO_BUILD_TAGS) .
 
