@@ -3,13 +3,7 @@ FROM golang:1.21.6-alpine as builder
 RUN apk --update add ca-certificates git tzdata
 RUN go install go.opentelemetry.io/collector/cmd/builder@latest
 
-WORKDIR /go/src/github.com/orbcommunity/otelcol-orb
-
-COPY go.mod .
-
-RUN go mod tidy
-
-COPY . .
+WORKDIR /build
 
 COPY cmd/otelcol-orb-maestro/builder-config.yaml .
 COPY cmd/otelcol-orb-maestro/example-config.yaml .
