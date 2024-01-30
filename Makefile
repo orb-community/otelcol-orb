@@ -4,6 +4,10 @@ RUN_CONFIG?=local/config.yaml
 CMD?=
 OTEL_VERSION=main
 OTEL_STABLE_VERSION=main
+ORB_DOCKERHUB_REPO=orbcommunity
+DOCKER_IMAGE_NAME_PREFIX ?= otelcol-orb
+ORB_VERSION=0.29.0
+REF_TAG ?= develop
 
 VERSION=$(shell git describe --always --match "v[0-9]*" HEAD)
 
@@ -205,11 +209,19 @@ endif
 
 .PHONY: docker-otelcolagent
 docker-otelcolagent:
-	docker build -t otelcol-orb-agent:develop -f cmd/otelcol-orb-agent/Dockerfile .
+	docker build \
+	  --tag=$(ORB_DOCKERHUB_REPO)/$(DOCKER_IMAGE_NAME_PREFIX)-agent:$(REF_TAG) \
+	  --tag=$(ORB_DOCKERHUB_REPO)/$(DOCKER_IMAGE_NAME_PREFIX)-agent:$(ORB_VERSION) \
+	  --tag=$(ORB_DOCKERHUB_REPO)/$(DOCKER_IMAGE_NAME_PREFIX)-agent:$(ORB_VERSION)-$(COMMIT_HASH) \
+	  -f cmd/otelcol-orb-agent/Dockerfile .
 
 .PHONY: docker-otelcolmaestro
 docker-otelcolmaestro:
-	docker build -t otelcol-orb-maestro:develop -f cmd/otelcol-orb-maestro/Dockerfile .
+	docker build \
+	  --tag=$(ORB_DOCKERHUB_REPO)/$(DOCKER_IMAGE_NAME_PREFIX)-maestro:$(REF_TAG) \
+	  --tag=$(ORB_DOCKERHUB_REPO)/$(DOCKER_IMAGE_NAME_PREFIX)-maestro:$(ORB_VERSION) \
+	  --tag=$(ORB_DOCKERHUB_REPO)/$(DOCKER_IMAGE_NAME_PREFIX)-maestro:$(ORB_VERSION)-$(COMMIT_HASH) \
+	  -f cmd/otelcol-orb-maestro/Dockerfile .
 
 .PHONY: generate
 generate: install-tools
