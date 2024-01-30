@@ -1,6 +1,6 @@
 module github.com/orb-community/otelcol-orb
 
-go 1.21.5
+go 1.21.6
 
 require (
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
