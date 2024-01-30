@@ -113,4 +113,4 @@ extensions:
   - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/extension/healthcheckextension v0.93.0
 
 replaces:
-  - github.com/orb-community/otelcol-orb/receiver/httpmetricsreceiver => ../../../receiver/httpmetricsreceiver
+  - github.com/orb-community/otelcol-orb/receiver/httpmetricsreceiver => ./../receiver/httpmetricsreceiver

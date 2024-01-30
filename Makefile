@@ -205,11 +205,11 @@ endif
 
 .PHONY: docker-otelcolagent
 docker-otelcolagent:
-	cd cmd/otelcol-orb-agent && docker build -t otelcol-orb-agent:develop .
+	docker build -t otelcol-orb-agent:develop -f cmd/otelcol-orb-agent/Dockerfile .
 
 .PHONY: docker-otelcolmaestro
 docker-otelcolmaestro:
-	cd cmd/otelcol-orb-maestro && docker build -t otelcol-orb-maestro:develop .
+	docker build -t otelcol-orb-maestro:develop -f cmd/otelcol-orb-maestro/Dockerfile .
 
 .PHONY: generate
 generate: install-tools

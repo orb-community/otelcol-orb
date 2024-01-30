@@ -1,13 +1,19 @@
-FROM golang:1.21-alpine as builder
+FROM golang:1.21.6-alpine as builder
 
 RUN apk --update add ca-certificates git tzdata
-
-WORKDIR /build
-
-COPY ../../receiver /build/receivers
-
 RUN go install go.opentelemetry.io/collector/cmd/builder@latest
-COPY builder-config.yaml .
+
+WORKDIR /go/src/github.com/orbcommunity/otelcol-orb
+
+COPY go.mod .
+
+RUN go mod tidy
+
+COPY . .
+
+COPY cmd/otelcol-orb-agent/builder-config.yaml .
+COPY cmd/otelcol-orb-agent/example-config.yaml .
+
 RUN builder --config=builder-config.yaml
 
 
@@ -20,8 +26,7 @@ USER ${USER_UID}
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
 COPY --from=builder /tmp/otelcol/otelcol-orb /otelcol-orb
-COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
-COPY example-config.yaml /etc/otel/config.yaml
+COPY --from=builder /tmp/otelcol/example-config.yaml /etc/otel/config.yaml
 EXPOSE 4317 55680 55679 13133
 ENTRYPOINT ["/otelcol-orb"]
 CMD ["--config", "/etc/otel/config.yaml"]
