@@ -228,12 +228,6 @@ generate: install-tools
 	go install go.opentelemetry.io/collector/cmd/mdatagen@latest
 	$(MAKE) for-all CMD="mdatagen generate ./..."
 
-.PHONY: mdatagen-test
-mdatagen-test:
-	cd cmd/mdatagen && $(GOCMD) install .
-	cd cmd/mdatagen && $(GOCMD) generate ./...
-	cd cmd/mdatagen && $(GOCMD) test ./...
-
 FILENAME?=$(shell git branch --show-current)
 
 .PHONY: genotelcolagent
