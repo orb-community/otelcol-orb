@@ -5,7 +5,7 @@ module go.opentelemetry.io/collector/cmd/builder
 go 1.20
 
 require (
-	github.com/lpegoraro/opentelemetry-collector-contrib/receiver/httpmetricsreceiver v0.87.0
+	github.com/orb-community/otelcol-orb/receiver/httpmetricsreceiver v0.87.0
 	go.opentelemetry.io/collector/receiver/otlpreceiver v0.87.0
 	go.opentelemetry.io/collector/exporter/debugexporter v0.87.0
 	github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusremotewriteexporter v0.91.0
@@ -19,4 +19,4 @@ require (
 	github.com/knadh/koanf/providers/confmap v0.1.0 // indirect
 )
 
-replace github.com/lpegoraro/opentelemetry-collector-contrib/receiver/httpmetricsreceiver => ../../../receiver/httpmetricsreceiver
+replace github.com/orb-community/otelcol-orb/receiver/httpmetricsreceiver => ../../../receiver/httpmetricsreceiver

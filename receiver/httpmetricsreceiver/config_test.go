@@ -1,7 +1,7 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-package httpmetricsreceiver // import "github.com/lpegoraro/opentelemetry-collector-contrib/receiver/httpmetricsreceiver"
+package httpmetricsreceiver // import "github.com/orb-community/otelcol-orb/receiver/httpmetricsreceiver"
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ import (
 	"go.opentelemetry.io/collector/receiver/scraperhelper"
 	"go.uber.org/multierr"
 
-	"github.com/lpegoraro/opentelemetry-collector-contrib/receiver/httpmetricsreceiver/internal/metadata"
+	"github.com/orb-community/otelcol-orb/receiver/httpmetricsreceiver/internal/metadata"
 )
 
 func TestValidate(t *testing.T) {

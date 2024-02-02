@@ -225,8 +225,8 @@ docker-otelcolmaestro:
 
 .PHONY: generate
 generate: install-tools
-	cd cmd/mdatagen && $(GOCMD) install .
-	$(MAKE) for-all CMD="$(GOCMD) generate ./..."
+	go install go.opentelemetry.io/collector/cmd/mdatagen@latest
+	$(MAKE) for-all CMD="mdatagen generate ./..."
 
 .PHONY: mdatagen-test
 mdatagen-test:
