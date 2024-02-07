@@ -1,0 +1,14 @@
+# Copyright The OpenTelemetry Authors
+# SPDX-License-Identifier: Apache-2.0
+
+module-sets:
+  contrib-base:
+    version: v0.92.0
+    modules:
+      - github.com/orb-community/otelcol-orb
+      - github.com/orb-community/otelcol-orb/receiver/httpmetricsreceiver
+      - github.com/orb-community/otelcol-orb/exporter/prometheusremotewriteexporter
+
+excluded-modules:
+
+

@@ -1,0 +1,35 @@
+---
+receivers:
+  httpmetrics:
+    targets:
+      - endpoint: https://demo.netbox.dev/
+        method: GET
+        follow_redirect: true
+        fail_if_not_ssl: true
+        contains_text: ["home", "0.0.1", "logo"]
+        tags: { "env": "prod", "customer": "acme" }
+      - endpoint: https://demo.netbox.dev/login
+        method: GET
+        follow_redirect: false
+        fail_if_not_ssl: true
+        contains_text: [ "login", "0.0.1", "logo" ]
+        tags: { "env": "prod", "customer": "acme" }
+    collection_interval: 60s
+  journald:
+    directory: /run/log/journal
+    units:
+      - ssh
+      - openvpn
+      - docker
+      - plymouth-log
+    priority: info
+extensions:
+exporters:
+
+service:
+  pipelines:
+    metrics:
+      exporters:
+        - logging
+      receivers:
+        - httpcheck
