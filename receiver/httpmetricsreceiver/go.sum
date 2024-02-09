@@ -91,6 +91,8 @@ github.com/open-telemetry/opentelemetry-collector-contrib/pkg/golden v0.91.0 h1:
 github.com/open-telemetry/opentelemetry-collector-contrib/pkg/golden v0.91.0/go.mod h1:JuAibPtRgW2nNPJ3kTBsZIKtriAfa8Dh3yrlPHVvuMM=
 github.com/open-telemetry/opentelemetry-collector-contrib/pkg/golden v0.93.0 h1:sQ2+pQ1vkZil4CpsjdzSwetleNKMgLoO1uAXwwbbZSY=
 github.com/open-telemetry/opentelemetry-collector-contrib/pkg/golden v0.93.0/go.mod h1:hn5eC3vatwBMZXQLNc9lzZ8vxTXjVpJ3DjyUu9M2CiM=
+github.com/open-telemetry/opentelemetry-collector-contrib/pkg/pdatatest v0.93.0/go.mod h1:7SXQW+a9kZ1T1WH9tKwFqfGGefGv8mZxRG/lTsa65uo=
+github.com/open-telemetry/opentelemetry-collector-contrib/pkg/pdatautil v0.93.0/go.mod h1:VmP4/AOAPwtpAG4TYHtWha603iLbLRmO7k0d0WbRqrM=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/prometheus/client_golang v1.17.0 h1:rl2sfwZMtSthVU752MqfjQozy7blglC+1SOtjMAMh+Q=
