@@ -12,7 +12,8 @@ exporters:
 
 receivers:
   # Custom
-  - gomod: github.com/orb-community/otelcol-orb/receiver/httpmetricsreceiver v0.92.0
+  - gomod: github.com/orb-community/otelcol-orb/receiver/httpmetricsreceiver v0.0.0-20240207235300-584e331e0059
+    path: receiver/httpmetricsreceiver
   # Upstream
   - gomod: go.opentelemetry.io/collector/receiver/otlpreceiver v0.93.0
   - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/activedirectorydsreceiver v0.93.0

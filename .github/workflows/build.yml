@@ -13,6 +13,15 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build Otelcol Orb Agent Docker
         run: make docker-otelcolagent
+      - name: Login to Docker Hub orbcommunity
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.ORB_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.ORB_DOCKERHUB_TOKEN }}
+      - name: Push service containers orbcommunity
+        if: github.event_name != 'pull_request'
+        run: docker push -a orbcommunity/otelcol-orb-agent
 
   build-otelcol-orb-maestro:
     runs-on: ubuntu-latest
@@ -20,33 +29,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build Otelcol Orb Maestro Docker
         run: make docker-otelcolmaestro
-
-  push-otelcol-orb-agent:
-    needs:
-      - build-otelcol-orb-agent
-    if: github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
       - name: Login to Docker Hub orbcommunity
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.ORB_DOCKERHUB_USERNAME }}
           password: ${{ secrets.ORB_DOCKERHUB_TOKEN }}
       - name: Push service containers orbcommunity
-        run: docker push -a orbcommunity/otelcol-orb-agent
-
-  push-otelcol-orb-maestro:
-    needs:
-      - build-otelcol-orb-maestro
-    if: github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Login to Docker Hub orbcommunity
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.ORB_DOCKERHUB_USERNAME }}
-          password: ${{ secrets.ORB_DOCKERHUB_TOKEN }}
-      - name: Push service containers orbcommunity
+        if: github.event_name != 'pull_request'
         run: docker push -a orbcommunity/otelcol-orb-maestro

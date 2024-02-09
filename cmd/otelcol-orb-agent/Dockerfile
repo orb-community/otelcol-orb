@@ -5,10 +5,6 @@ RUN go install go.opentelemetry.io/collector/cmd/builder@latest
 
 WORKDIR /go/src/github.com/orbcommunity/otelcol-orb
 
-COPY go.mod .
-
-RUN go mod tidy
-
 COPY . .
 
 COPY cmd/otelcol-orb-agent/builder-config.yaml .
